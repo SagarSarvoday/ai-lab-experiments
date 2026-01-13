@@ -1,55 +1,38 @@
 N = 8
 
-def is_safe(board, row, col):
-    # Check column
-    for i in range(row):
-        if board[i] == col:
+def is_safe(state, row, col):
+    for r in range(row):
+        c = state[r]
+        if c == col or abs(c - col) == abs(r - row):
             return False
-
-    # Check left diagonal
-    i, j = row - 1, col - 1
-    while i >= 0 and j >= 0:
-        if board[i] == j:
-            return False
-        i -= 1
-        j -= 1
-
-    # Check right diagonal
-    i, j = row - 1, col + 1
-    while i >= 0 and j < N:
-        if board[i] == j:
-            return False
-        i -= 1
-        j += 1
-
     return True
 
 
-def solve_queens(board, row):
+def dfs_queens(state, row):
     if row == N:
-        print_solution(board)
-        return True
+        print_solution(state)
+        return True  # stop after first solution
 
     for col in range(N):
-        if is_safe(board, row, col):
-            board[row] = col
-            if solve_queens(board, row + 1):
+        if is_safe(state, row, col):
+            state[row] = col
+            if dfs_queens(state, row + 1):
                 return True
-            board[row] = -1  # Backtrack
+            state[row] = -1  # backtrack
 
     return False
 
 
-def print_solution(board):
+def print_solution(state):
     for i in range(N):
         for j in range(N):
-            if board[i] == j:
+            if state[i] == j:
                 print("Q", end=" ")
             else:
                 print(".", end=" ")
         print()
 
 
-# Driver code
+# Initial state
 board = [-1] * N
-solve_queens(board, 0)
+dfs_queens(board, 0)
