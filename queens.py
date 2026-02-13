@@ -11,14 +11,14 @@ def is_safe(state, row, col):
 def dfs_queens(state, row):
     if row == N:
         print_solution(state)
-        return True  # stop after first solution
+        return True  
 
     for col in range(N):
         if is_safe(state, row, col):
             state[row] = col
             if dfs_queens(state, row + 1):
                 return True
-            state[row] = -1  # backtrack
+            state[row] = -1  
 
     return False
 
